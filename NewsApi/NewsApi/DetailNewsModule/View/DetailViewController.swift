@@ -22,21 +22,6 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
         title = "Article"
         presenter.setNews()
-        
-//                navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "iconMenu"), style: .plain, target: self.revealViewController(), action: #selector(SWRevealViewController.revealToggle(_:)))
-        let backBarButton = UIBarButtonItem(title: "Back", style: .plain, target: self, action: "backAction")
-         navigationController?.navigationBar.topItem?.backBarButtonItem = backBarButton
-    }
-    
-    func backAction() -> Void {
-        for vc in (self.navigationController?.viewControllers ?? []) {
-            if vc is NewsViewController {
-                let controller = vc as! NewsViewController
-                controller.newsTableView.reloadData()
-                _ =  self.navigationController?.popToViewController(controller, animated: true)
-                break
-            }
-        }
     }
 }
 

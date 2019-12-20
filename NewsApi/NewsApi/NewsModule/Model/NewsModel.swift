@@ -20,7 +20,7 @@ struct Articles: Codable {
     var imageData: Data?
     var publishedAt: String
     var title: String
-    var description: String
+    var description: String?
     var url: URL
     var status: Bool? = false
 }

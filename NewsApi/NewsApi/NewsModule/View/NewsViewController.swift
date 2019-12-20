@@ -9,10 +9,11 @@
 import UIKit
 
 class NewsViewController: UIViewController {
-
+    
     @IBOutlet weak var newsTableView: UITableView!
     
     var presenter: NewsPresenter!
+    private let searchController = UISearchController(searchResultsController: nil)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,6 +23,16 @@ class NewsViewController: UIViewController {
         newsTableView.register(nib, forCellReuseIdentifier: "NewsTableViewCell")
         newsTableView.dataSource = self
         newsTableView.delegate = self
+        setSearchController()
+    }
+    
+    private func setSearchController() {
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.delegate = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search news"
+        navigationItem.searchController = searchController
+        definesPresentationContext = true
     }
 }
 
@@ -53,8 +64,24 @@ extension NewsViewController: UITableViewDataSource {
 
 extension NewsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let news = presenter.articles?[indexPath.row]
-        presenter.tapOnTheArticle(news: news)
+        presenter.articles?[indexPath.row].status = true
+        newsTableView.reloadData()
+        presenter.tapOnTheArticle(news: presenter.articles?[indexPath.row])
+    }
+}
+
+extension NewsViewController: UISearchResultsUpdating, UISearchBarDelegate {
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        presenter.getNews()
+    }
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        if let searchText = searchController.searchBar.text {
+            if searchText.count > 0 {
+                presenter.searchArticle(searchedText: searchText)
+            }
+        }
+    }
+    func updateSearchResults(for searchController: UISearchController) {
     }
 }
 

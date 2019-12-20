@@ -19,6 +19,7 @@ protocol NewsViewPresenterProtocol: class {
     func getImagesForNews()
     var articles: [Articles]? { get set }
     func tapOnTheArticle(news: Articles?)
+    func searchArticle(searchedText: String)
 }
 
 class NewsPresenter: NewsViewPresenterProtocol {
@@ -70,6 +71,17 @@ class NewsPresenter: NewsViewPresenterProtocol {
     
     func tapOnTheArticle(news: Articles?) {
         router?.showDetailNewsController(news: news)
+    }
+    
+    func searchArticle(searchedText: String) {
+        let searchedNews = articles?.filter({ (article: Articles) -> Bool in
+            if article.title.lowercased().contains(searchedText.lowercased()) {
+                return true
+            }
+            return false
+        })
+        articles = searchedNews
+        self.view?.success()
     }
 }
 

@@ -15,7 +15,6 @@ protocol DetailViewProtocol: class {
 protocol DetailViewPresenterProtocol: class {
     init(view: DetailViewProtocol, netWorkService: NetWorkServiceProtocol, router: RouterProtocol, news: Articles?)
     func setNews()
-
 }
 
 class DetailPresenter: DetailViewPresenterProtocol {
